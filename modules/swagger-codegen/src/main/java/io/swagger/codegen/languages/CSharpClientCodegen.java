@@ -31,6 +31,7 @@ public class CSharpClientCodegen extends AbstractCSharpCodegen {
 
     protected String packageGuid = "{" + java.util.UUID.randomUUID().toString().toUpperCase() + "}";
     protected String clientPackage = "IO.Swagger.Client";
+    protected String messagesPackage = "IO.Swagger.Messages";
     protected String localVariablePrefix = "";
     protected String apiDocPath = "docs/";
     protected String modelDocPath = "docs/";
@@ -191,12 +192,13 @@ public class CSharpClientCodegen extends AbstractCSharpCodegen {
 
 
         if (isEmpty(apiPackage)) {
-            setApiPackage("Api");
+            setApiPackage("Dtos");
         }
         if (isEmpty(modelPackage)) {
-            setModelPackage("Model");
+            setModelPackage("Dtos");
         }
         clientPackage = "Client";
+        messagesPackage = "Messages";
 
         Boolean excludeTests = false;
         if (additionalProperties.containsKey(CodegenConstants.EXCLUDE_TESTS)) {
@@ -285,6 +287,7 @@ public class CSharpClientCodegen extends AbstractCSharpCodegen {
         additionalProperties.put(CodegenConstants.API_PACKAGE, apiPackage);
         additionalProperties.put(CodegenConstants.MODEL_PACKAGE, modelPackage);
         additionalProperties.put("clientPackage", clientPackage);
+        additionalProperties.put("messagesPackage", messagesPackage);
 
         additionalProperties.put(CodegenConstants.EXCLUDE_TESTS, excludeTests);
         additionalProperties.put(CodegenConstants.VALIDATABLE, this.validatable);
@@ -330,6 +333,8 @@ public class CSharpClientCodegen extends AbstractCSharpCodegen {
         String packageFolder = sourceFolder + File.separator + packageName;
         String clientPackageDir = packageFolder + File.separator + clientPackage;
         String testPackageFolder = testFolder + File.separator + testPackageName;
+
+        String messagesPackageDir = packageFolder + File.separator + messagesPackage;
 
         additionalProperties.put("testPackageName", testPackageName);
 

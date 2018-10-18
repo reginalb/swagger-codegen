@@ -293,6 +293,7 @@ public class DefaultGenerator extends AbstractGenerator implements Generator {
             modelsToGenerate = new HashSet<String>(Arrays.asList(modelNames.split(",")));
         }
 
+
         Set<String> modelKeys = definitions.keySet();
         if (modelsToGenerate != null && !modelsToGenerate.isEmpty()) {
             Set<String> updatedKeys = new HashSet<String>();
@@ -384,6 +385,7 @@ public class DefaultGenerator extends AbstractGenerator implements Generator {
 
         // generate files based on processed models
         for (String modelName : allProcessedModels.keySet()) {
+            
             Map<String, Object> models = (Map<String, Object>) allProcessedModels.get(modelName);
             models.put("modelPackage", config.modelPackage());
             try {
@@ -404,7 +406,24 @@ public class DefaultGenerator extends AbstractGenerator implements Generator {
                 allModels.add(modelTemplate);
                 for (String templateName : config.modelTemplateFiles().keySet()) {
                     String suffix = config.modelTemplateFiles().get(templateName);
+                    
                     String filename = config.modelFileFolder() + File.separator + config.toModelFilename(modelName) + suffix;
+                    
+                    /*
+                    if (filename.toLowerCase().contains("payload")) 
+                    {
+                    	filename = filename.replace("Dtos", "Messages").replace("PayloadEntrada", "Request").replace("PayloadSaida", "Response");
+                    	
+                    }
+                    */
+                    
+                    if ((filename.toLowerCase().contains("request")) || (filename.toLowerCase().contains("response")))
+                    {
+                    	filename = filename.replace("Dtos", "Messages");
+                    	
+                    }
+                    
+                    
                     if (!config.shouldOverwrite(filename)) {
                         LOGGER.info("Skipped overwriting " + filename);
                         continue;
